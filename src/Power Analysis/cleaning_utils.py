@@ -72,6 +72,11 @@ def shared_endowment(treatment_df: np.ndarray):
 
 def append_fgf_typing(treatment_df: np.ndarray, smdf: np.ndarray):
   """
+  Adds the FGF player typing to the shared/split endowment dataframe : could be useful for subsequent analysis
+
+  :param treatment_df: the treatment dataframe
+  :param smdf: the ANALYZED strategy method dataframe
+  :return: a combined data frame which adds the player's fgf typing to the treatment dataframe
   """
   merged_df = treatment_df.merge(smdf[['participant.code', 'player.typing']], on='participant.code', how='left')
   return merged_df
