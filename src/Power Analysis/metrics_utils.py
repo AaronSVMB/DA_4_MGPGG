@@ -60,7 +60,7 @@ def average_investment(df: np.ndarray):
   :return: creates a new dataframe that displays each subjects average investment over the first 5 periods of play
   """
   # Filter rows for the first 5 periods
-  # df = df[df['subsession.round_number'] <= 5]
+  df = df[df['subsession.round_number'] <= 5]
 
   # Group by subject and calculate the mean for Green and Blue investments
   avg_investments = df.groupby('participant.code')[['player.green_group_investment', 'player.blue_group_investment']].mean().reset_index()
