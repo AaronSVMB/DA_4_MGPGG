@@ -20,6 +20,24 @@ Post-classification tests
 
 I implemented both
 
+## Risk Preference – Holt and Laury (2002) – Analysis
+
+Goal. Produce metric of risk aversion for each player based on their Risk Preference choices.
+
+The general idea is the num_times_choose_A (Safe lottery) Inc = Inc Risk Aversion = Inc r estimation interval
+    where r = 0 risk neutral, r less than 0 risk seeking, and r > 0 risk averse.
+    Given the utility function U(x) = x^(1-r)/(1-r).
+
+Our values for A and B have the same switching point as Holt and Laury (2002) so I can take advantage of the risk estimation intervals that they construct from the aforementioned utility function.
+
+The Risk Preference Code
+- Reads and cleans the risk preference data
+- Counts the number of times each subject selects the safe lottery, A, and stores this value
+- Produces an upper and lower bound for the risk estimate based off the above
+- Classifies the player on a risk scale
+- Produces summary statistics on the Risk Preferences across sessions
+- A simple bar chart to visualize the distribution of this content
+
 ### Pathing 
 
 "export PYTHONPATH=$PYTHONPATH:./src"
