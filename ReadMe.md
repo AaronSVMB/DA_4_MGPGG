@@ -38,6 +38,15 @@ The Risk Preference Code
 - Produces summary statistics on the Risk Preferences across sessions
 - A simple bar chart to visualize the distribution of this content
 
+## Questionnaire 
+
+Goal. Store questionnaire responses from subjects in an easy to read way. We utilized 3 different surveys for this experiment
+- Aaron's survey – used for the first session of the shared endowment as we were waiting on Larry's survey to be approved for IRB. This survey is similar to Larry's, but shorter and lacks some of the strategy ellicitation questiosn that Larry's survey utilizes
+- Larry's Single Survey - survey used for all single group treatments
+- Larry's multi survey - survey used for all multi-group treatments. The same questions are asked in Single and Survey with appropriate wording alterations and one additional question is nested in this survey. 
+
+With this survey information, I produce a document that highlights some interesting responses from subjects that can be used for anecdotal pieces in a presentation as well as produce summary statistics on the non-short answer questions. 
+
 ### Pathing 
 
 "export PYTHONPATH=$PYTHONPATH:./src"
