@@ -97,4 +97,16 @@ def questionnaire_concat_larry_and_aaron(larry_both: pd.DataFrame, aaron_survey:
                                                                 'subsession.round_number', 'session.code', 'session.is_demo']]],
                                                                 ignore_index =True
                                                                 )
+    
+    # Rename certain column names to avoid any issues when combining with big data frame
+
+    questionnaire_all_df.rename(columns={
+        'player.id_in_group':'player.id_in_group_survey',
+        'player.payoff':'player.payoff_survey',
+        'player.password_to_start':'player.password_to_start_survey',
+        'player.start_time':'player.start_time_survey',
+        'group.id_in_subsession':'group_id_in_subsession_survey',
+        'subsesion.round_number':'subsession.round_number_survey'
+    }, inplace=True)
+
     return questionnaire_all_df

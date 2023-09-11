@@ -147,9 +147,50 @@ def gen_motivation_dict(all_questionnaire_df: pd.DataFrame, column_name: str):
 # Decision Style
 # ====================================================================================================================
 
-#TODO 
 # Will need 2 separate functions | one for Aaron's survey (5 levels) and one for Larry's survey (4 levels) 
 # And Larry's survey has additional questions of this variety
+
+def gen_decision_style_aaron_dict(all_questionnaire_df: pd.DataFrame):
+    """
+    Initial Survey had 5 levels for this style of question so those resposnes are stored separately in this function
+    Relevent session code: v90x8oti
+
+    :param all_questionnaire_df: conbined DF from our 3 survey types
+    :return: facts_dict_final, feelings_dict_final
+    """
+    questionnaire_aaron_df = all_questionnaire_df[all_questionnaire_df['session.code']=='v90x8oti']
+
+    # Decision Style Facts
+    count_facts_series = questionnaire_aaron_df['player.decision_style_facts'].value_counts()
+    facts_dict = count_facts_series.to_dict()
+
+    decition_style_aaron_structure = {1.0: 0,
+                                      2.0: 0,
+                                      3.0: 0,
+                                      4.0: 0,
+                                      5.0: 0}
+    
+    facts_dict_final = {key: facts_dict.get(key, 0) + decition_style_aaron_structure.get(key, 0) for key in set(facts_dict) | set(decition_style_aaron_structure)}
+
+    facts_dict_final['always'] = facts_dict_final.pop(1.0)
+    facts_dict_final['usually'] = facts_dict_final.pop(2.0)
+    facts_dict_final['sometimes'] = facts_dict_final.pop(3.0)
+    facts_dict_final['rarely'] = facts_dict_final.pop(4.0)
+    facts_dict_final['never'] = facts_dict_final.pop(5.0)
+
+    # Decision Style Feelings
+    count_feelings_series = questionnaire_aaron_df['player.decision_style_feelings'].value_counts()
+    feelings_dict = count_feelings_series.to_dict()
+
+    feelings_dict_final = {key: feelings_dict.get(key, 0) + decition_style_aaron_structure.get(key, 0) for key in set(feelings_dict) | set(decition_style_aaron_structure)}
+
+    feelings_dict_final['always'] = feelings_dict_final.pop(1.0)
+    feelings_dict_final['usually'] = feelings_dict_final.pop(2.0)
+    feelings_dict_final['sometimes'] = feelings_dict_final.pop(3.0)
+    feelings_dict_final['rarely'] = feelings_dict_final.pop(4.0)
+    feelings_dict_final['never'] = feelings_dict_final.pop(5.0)
+
+    return facts_dict_final, feelings_dict_final
 
 
 # ====================================================================================================================
@@ -182,3 +223,13 @@ def gen_clarity_dict(all_questionnaire_df: pd.DataFrame):
     clarity_dict_final['dont know'] = clarity_dict_final.pop(5.0)
 
     return clarity_dict_final
+
+
+# ====================================================================================================================
+# TODO Summary statistics where relevant on particular survey questions
+# ====================================================================================================================
+
+
+# ====================================================================================================================
+# TODO Text analysis (NLP) on short answer Qs 
+# ====================================================================================================================

@@ -35,4 +35,14 @@ def rp_reading_and_cleaning(filename: str):
                     axis = 1, inplace=True)
     # reset indices
     dataframe = dataframe.reset_index(drop=True)
+
+    # rename columns that could become problematic when I combine the entire dataframe
+    dataframe.rename(columns={
+        'player.id_in_group':'player.id_in_group_lottery',
+        'player.payoff':'player.payoff_lottery',
+        'player.start_time':'player.start_time_lottery',
+        'player.time_spent_results':'player.time_spent_results_lottery',
+        'group.id_in_subsession':'group.id_in_subsession_lottery',
+        'subsession.round_number':'subsession.round_number_lottery'
+    }, inplace=True)
     return dataframe
