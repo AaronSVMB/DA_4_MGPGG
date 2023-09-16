@@ -217,3 +217,43 @@ def gen_avg_investment_per_participant_all_treatments(df: pd.DataFrame):
     shared_per_participant = gen_avg_invest_per_participant(df, 'shared')
 
     return single_per_participant, split_per_participant, shared_per_participant
+
+
+# ====================================================================================================================
+# Gender Difference 
+# ====================================================================================================================
+
+
+def gen_gender_split(df: pd.DataFrame):
+    """_summary_
+
+    :param df: _description_
+    """
+    # Single series for female, then male
+    single_df = df[df['pgg_treatment_applied'] == 'single']
+    single__female_df = single_df[single_df['player.gender'] == 2]
+    average_investment_per_participant_female_single = single__female_df.groupby('participant.code')['player.investment'].mean()
+
+    single__male_df = single_df[single_df['player.gender'] == 1]
+    average_investment_per_participant_male_single = single__male_df.groupby('participant.code')['player.investment'].mean()
+
+    # Multi series for female then male
+    multi_df = df[df['pgg_treatment_applied'] != 'single' ]
+    multi__female_df = multi_df[multi_df['player.gender'] == 2]
+    average_invest_blue_female = multi__female_df.groupby('participant.code')['player.blue_group_investment'].mean()
+    average_invest_green_female = multi__female_df.groupby('participant.code')['player.green_group_investment'].mean()
+    average_investment_per_participant_female_multi =  average_invest_blue_female + average_invest_green_female
+
+    multi__male_df = multi_df[multi_df['player.gender'] == 1]
+    average_invest_blue_male = multi__male_df.groupby('participant.code')['player.blue_group_investment'].mean()
+    average_invest_green_male = multi__male_df.groupby('participant.code')['player.green_group_investment'].mean()
+    average_investment_per_participant_male_multi =  average_invest_blue_male + average_invest_green_male
+
+    female_df = pd.concat([average_investment_per_participant_female_single, average_investment_per_participant_female_multi])
+    male_df = pd.concat([average_investment_per_participant_male_single, average_investment_per_participant_male_multi])
+
+    return female_df, male_df
+    
+    
+
+    

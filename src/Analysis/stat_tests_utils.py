@@ -6,10 +6,13 @@ Functions for MGPGG analysis – Statistical Tests
 # Imports
 # ====================================================================================================================
 
+
 from constants import pd, plt, stats, np, sm
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
+from statsmodels.stats.proportion import proportions_ztest
 from scipy.stats import kruskal
 import scikit_posthocs as sp
+
 
 # ====================================================================================================================
 # Two-Sanple t-test
@@ -84,7 +87,7 @@ def gen_kruskal_wallis_and_conover_iman(single_avgs: pd.Series, split_avgs: pd.S
     # If p-value is significant, perform Conover-Iman posthoc test
     if p_value < 0.05:
         data = np.concatenate([single_avgs, split_avgs, shared_avgs])
-        labels = ['single']*len(single_avgs) + ['split']*len(split_avgs) + ['C']*len(shared_avgs)
+        labels = ['single']*len(single_avgs) + ['split']*len(split_avgs) + ['shared']*len(shared_avgs)
         df = pd.DataFrame({'Value': data, 'Group': labels})
         
         posthoc_result = sp.posthoc_conover(df, val_col='Value', group_col='Group', p_adjust='bonferroni')
