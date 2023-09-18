@@ -15,15 +15,15 @@ import scikit_posthocs as sp
 
 
 # ====================================================================================================================
-# Two-Sanple t-test
+# Two-Sample t-test
 # ====================================================================================================================
 
 
 def gen_t_stat(sampleOne: pd.Series, sampleTwo: pd.Series):
-    """_summary_
+    """generates t-statistic 
 
-    :param sampleOne: _description_
-    :param sampleTwo: _description_
+    :param sampleOne: first sample of data
+    :param sampleTwo: second sample of data
     """
     t_stat, p_val = stats.ttest_ind(sampleOne, sampleTwo, equal_var=False)
 
@@ -47,11 +47,11 @@ def gen_t_stat(sampleOne: pd.Series, sampleTwo: pd.Series):
 
 
 def gen_tukey_test(single_avgs: pd.Series, split_avgs: pd.Series, shared_avgs: pd.Series):
-    """_summary_
+    """generates tukey's multiple comparisons correction for multiple pair-wise comparisons
 
-    :param single_avgs: _description_
-    :param split_avgs: _description_
-    :param shared_avgs: _description_
+    :param single_avgs: data for single treatment
+    :param split_avgs: data for split treatment
+    :param shared_avgs: data for shared treatment
     """
     data = np.concatenate([single_avgs, split_avgs, shared_avgs])
     labels = np.array(['single']*len(single_avgs) + ['split']*len(split_avgs) + ['shared']*len(shared_avgs))
@@ -73,11 +73,11 @@ def gen_tukey_test(single_avgs: pd.Series, split_avgs: pd.Series, shared_avgs: p
 
 
 def gen_kruskal_wallis_and_conover_iman(single_avgs: pd.Series, split_avgs: pd.Series, shared_avgs: pd.Series):
-    """_summary_
+    """ conducts non-parametric kruskal-wallis test followed by the conover iman post hoc test 
 
-    :param single_avgs: _description_
-    :param split_avgs: _description_
-    :param shared_avgs: _description_
+    :param single_avgs: data for single treatment
+    :param split_avgs: data for split treatment
+    :param shared_avgs: data for shared treatment
     """
     stat, p_value = kruskal(single_avgs, split_avgs, shared_avgs)
 

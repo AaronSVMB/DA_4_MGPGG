@@ -15,6 +15,13 @@ from constants import plt
 
     
 def gen_avg_alt(df: pd.DataFrame, treatment: str):
+    """
+    Generates averages and standard deviations for investments for each treatment
+
+    :param df: mgpggdf all apps
+    :param treatment: str value of 'single', 'split', or 'shared'
+    :return: dictionary with treatment name, average investments, and standard deviations
+    """
     if treatment == 'split' or treatment == 'shared':
         blue_grouped_avg_df = df.groupby('pgg_treatment_applied')['player.blue_group_investment'].mean()
         blue_grouped_std_df = df.groupby('pgg_treatment_applied')['player.blue_group_investment'].std()
@@ -48,9 +55,9 @@ def gen_avg_alt(df: pd.DataFrame, treatment: str):
 
     
 def gen_avg_invest_per_group_per_treatment_list(df : pd.DataFrame):
-    """_summary_
+    """generates average investments for all treatments. saves as a list of dictionaries
 
-    :param df: _description_
+    :param df: mgpggdf all apps
     """
     # Single
     single_avg = gen_avg_alt(df, 'single')
@@ -68,10 +75,10 @@ def gen_avg_invest_per_group_per_treatment_list(df : pd.DataFrame):
 
 
 def gen_avg_first_period_invest_per_treatment(df: pd.DataFrame, treatment: str):
-    """_summary_
+    """Generates average first period investment for a specified treatment
 
-    :param df: _description_
-    :param treatment: _description_
+    :param df: mgpggdf all apps
+    :param treatment: str value of 'single', 'split', or 'shared'
     """
     first_period_df = df[df['subsession.round_number'] == 1]
 
@@ -79,9 +86,9 @@ def gen_avg_first_period_invest_per_treatment(df: pd.DataFrame, treatment: str):
     return avg_first_period_investment_dict
 
 def gen_first_period_list(df: pd.DataFrame):
-    """_summary_
+    """generates all average first period investments for all 3 treatments. saves as a list of dictionaries
 
-    :param df: _description_
+    :param df: mgpggdf all apps
     """
     # Single
     single_avg = gen_avg_first_period_invest_per_treatment(df, 'single')
@@ -99,10 +106,10 @@ def gen_first_period_list(df: pd.DataFrame):
 
 
 def gen_investment_avg_invest_per_period(df: pd.DataFrame, treatment: str):
-    """_summary_
+    """generates average investment in each period for a specified treatment
 
-    :param df: _description_
-    :param treatment: _description_
+    :param df: mgpggdf all apps
+    :param treatment: str value of 'single', 'split', or 'shared'
     """
     last_round = df['subsession.round_number'].max()
 
@@ -127,11 +134,11 @@ def gen_investment_avg_invest_per_period(df: pd.DataFrame, treatment: str):
 
 
 def gen_avg_invest_plots(df: pd.DataFrame ,singleAvg: dict, splitAvg: dict, sharedAvg: dict):
-    """_summary_
+    """generates a line graph with period on the x-axis and average investment as the y. plots all 3 treatments
 
-    :param singleAvg: _description_
-    :param splitAvg: _description_
-    :param sharedAvg: _description_
+    :param singleAvg: single treatment avg invest schedule
+    :param splitAvg: split treatment avg invest schedule
+    :param sharedAvg: shared treatment avg invest schedule
     """
     last_round = df['subsession.round_number'].max()
     x_values = [i for i in range(1, last_round + 1)]
@@ -157,9 +164,9 @@ def gen_avg_invest_plots(df: pd.DataFrame ,singleAvg: dict, splitAvg: dict, shar
 
 
 def gen_invest_subsets(treatment_avg_per_period: dict):
-    """_summary_
+    """generates sub set ranges 1, 2-10, and 11-20 of average investments
 
-    :param treatment_avg_per_period: _description_
+    :param treatment_avg_per_period: avg investment schedule for a selected treatment
     """
     avgs_period_groupings_dict = {}
     avgs_period_groupings_dict['period_1'] = treatment_avg_per_period['period_1']
@@ -183,10 +190,10 @@ def gen_invest_subsets(treatment_avg_per_period: dict):
 
 
 def gen_avg_invest_per_participant(df: pd.DataFrame, treatment: str):
-    """_summary_
+    """generate average investment for each participant across 20 periods
 
-    :param df: _description_
-    :param treatment: _description_
+    :param df: mgpggdf all apps
+    :param treatment: str value of 'single', 'split', or 'shared'
     """
     if treatment == 'single':
         single_df = df[df['pgg_treatment_applied'] == treatment]
@@ -206,9 +213,9 @@ def gen_avg_invest_per_participant(df: pd.DataFrame, treatment: str):
 
 
 def gen_avg_investment_per_participant_all_treatments(df: pd.DataFrame):
-    """_summary_
+    """generates average investment per subject across all 20 periods for all 3 treatments
 
-    :param df: _description_
+    :param df: mgpggdf all apps
     """
     single_per_participant = gen_avg_invest_per_participant(df, 'single')
 
@@ -225,9 +232,9 @@ def gen_avg_investment_per_participant_all_treatments(df: pd.DataFrame):
 
 
 def gen_gender_split(df: pd.DataFrame):
-    """_summary_
+    """generate average investment lists for each participant split by gender
 
-    :param df: _description_
+    :param df: mgpggdf all apps
     """
     # Single series for female, then male
     single_df = df[df['pgg_treatment_applied'] == 'single']
@@ -255,5 +262,20 @@ def gen_gender_split(df: pd.DataFrame):
     return female_df, male_df
     
     
+# ====================================================================================================================
+# DAta prep, regressions
+# ====================================================================================================================
 
-    
+def gen_data_panel_ols(df: pd.DataFrame, indices: list, depVar: str, indepVar):
+    """_summary_
+
+    :param df: _description_
+    :param indices: _description_
+    :param depVar: _description_
+    :param indepVar: _description_
+    """
+    #TODO fix 
+    depVarList = list(depVar)
+    columns_to_keep = indices + depVarList + indepVar
+    df = df.loc[:, columns_to_keep ]
+    return df 

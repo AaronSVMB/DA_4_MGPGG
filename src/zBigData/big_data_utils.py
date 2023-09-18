@@ -56,4 +56,6 @@ def gen_mgpgg_df(all_treatment_file: str, all_sm_file: str,
 
     mgpgg_df.drop(['Shared','Split','Single','Unnamed: 1', 'Unnamed: 0_y', 'Unnamed: 0'], axis=1, inplace=True)
     mgpgg_df.rename(columns={'Unnamed: 0_x':'pgg_treatment_applied'}, inplace=True)
+    # useless vars
+    mgpgg_df.drop(['player.id_in_group_survey', 'player.payoff_survey', 'player.id_in_group_lottery'], axis=1, inplace=True)
     return mgpgg_df
