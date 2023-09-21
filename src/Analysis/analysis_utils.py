@@ -118,7 +118,7 @@ def gen_investment_avg_invest_per_period(df: pd.DataFrame, treatment: str):
         for i in range(1, last_round + 1):
             period_df = df[df['subsession.round_number'] == i]
             blue_grouped_avg_df = period_df.groupby('pgg_treatment_applied')['player.blue_group_investment'].mean()
-            green_grouped_avg_df = df.groupby('pgg_treatment_applied')['player.green_group_investment'].mean()
+            green_grouped_avg_df = period_df.groupby('pgg_treatment_applied')['player.green_group_investment'].mean()
 
             blue_investment_dict[f'blue_period_{i}_avg'] = blue_grouped_avg_df.loc[treatment]
             green_investment_dict[f'green_period_{i}_avg'] = green_grouped_avg_df.loc[treatment]
@@ -153,6 +153,7 @@ def gen_avg_invest_plots(df: pd.DataFrame ,singleAvg: dict, splitAvg: dict, shar
 
     plt.xlabel('Periods')
     plt.ylabel('Avg Investment to Group Joint Account(s)')
+    plt.ylim(0, 20)
     plt.title('Avg Investment per Treatment in Each Period (Both Groups)')
     plt.legend()
     plt.show()
