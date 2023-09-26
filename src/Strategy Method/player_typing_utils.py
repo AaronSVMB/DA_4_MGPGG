@@ -219,9 +219,11 @@ def string_typings(row: int):
   """
   if row['player.is_freerider']:
     return 'freerider'
-  elif row['player.is_conditional_cooperator']:
+  if row['player.is_conditional_cooperator'] and row['player.is_hump_shaped']:
+    return 'hump' # FGF partition error in their defintiion, from inspection of investment table plots, we feel subjects more align with their hump typing | these can also be other's if we wish
+  if row['player.is_conditional_cooperator']:
     return 'conditional'
-  elif row['player.is_hump_shaped']:
+  if row['player.is_hump_shaped']: 
     return 'hump'
   else:
     return 'other'
