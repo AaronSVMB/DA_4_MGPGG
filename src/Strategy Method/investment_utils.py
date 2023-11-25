@@ -92,9 +92,15 @@ def fgf_plot(x_values: list, conditional_investment_dict: dict):
   plt.plot(x_values, x_values, label='Perfect CC')
 
   # Add labels and title
-  plt.xlabel('Average contribution levels of other group members')
-  plt.ylabel('Own contribution according to the Investment Table')
-  plt.title('Type-specific average own contribution level for each average contribution level of other group members')
+  plt.xlabel('Average Investment of Group Members')
+  plt.ylabel('Your Investment (Investment Table)')
+  plt.title('Conditional Investment Plot Partitioned by Player-Types')
+
+  plt.xlim(0, 20)
+  plt.ylim(0, 20)
+  plt.xticks(range(0, 21))
+  plt.yticks(range(0, 21)) 
+
 
   # Add legend
   plt.legend()
