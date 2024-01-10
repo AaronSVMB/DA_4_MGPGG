@@ -139,17 +139,8 @@ def calculate_and_plot_averages(df):
 
     # Calculate the mean investments for the 'better' and 'worse' groups for both True and False cases
     # across all sessions
-    better_group_averages_true = df_true[df_true['player.id_in_group'].isin([1, 2, 3, 4])].groupby('subsession.round_number')['player.green_group_investment'].mean() \
-                                + df_true[df_true['player.id_in_group'].isin([5, 6, 7, 8])].groupby('subsession.round_number')['player.blue_group_investment'].mean()
-
-    worse_group_averages_true = df_true[df_true['player.id_in_group'].isin([1, 2, 3, 4])].groupby('subsession.round_number')['player.blue_group_investment'].mean() \
-                               + df_true[df_true['player.id_in_group'].isin([5, 6, 7, 8])].groupby('subsession.round_number')['player.green_group_investment'].mean()
-
-    better_group_averages_false = df_false[df_false['player.id_in_group'].isin([1, 2, 3, 4])].groupby('subsession.round_number')['player.green_group_investment'].mean() \
-                                 + df_false[df_false['player.id_in_group'].isin([5, 6, 7, 8])].groupby('subsession.round_number')['player.blue_group_investment'].mean()
-
-    worse_group_averages_false = df_false[df_false['player.id_in_group'].isin([1, 2, 3, 4])].groupby('subsession.round_number')['player.blue_group_investment'].mean() \
-                                + df_false[df_false['player.id_in_group'].isin([5, 6, 7, 8])].groupby('subsession.round_number')['player.green_group_investment'].mean()
+    better_group_averages_true, worse_group_averages_true = calculate_averages(df_true)
+    better_group_averages_false, worse_group_averages_false = calculate_averages(df_false)
 
     # Plotting
     fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(20, 5))
@@ -190,11 +181,25 @@ def calculate_and_plot_averages(df):
 
 def calculate_averages(df):
     # Group by round number and calculate the mean investments for each group
-    better_group_averages = df[df['player.id_in_group'].isin([1, 2, 3, 4])].groupby('subsession.round_number')['player.green_group_investment'].mean() \
-                            + df[df['player.id_in_group'].isin([5, 6, 7, 8])].groupby('subsession.round_number')['player.blue_group_investment'].mean()
 
-    worse_group_averages = df[df['player.id_in_group'].isin([1, 2, 3, 4])].groupby('subsession.round_number')['player.blue_group_investment'].mean() \
-                           + df[df['player.id_in_group'].isin([5, 6, 7, 8])].groupby('subsession.round_number')['player.green_group_investment'].mean()
+    # Group and mean for green group investments by the green group
+    green_better_avg = df[df['player.id_in_group'].isin([1, 2, 3, 4])].groupby('subsession.round_number')['player.green_group_investment'].mean()
+
+    # Group and mean for blue group investments by the blue group
+    blue_better_avg = df[df['player.id_in_group'].isin([5, 6, 7, 8])].groupby('subsession.round_number')['player.blue_group_investment'].mean()
+
+    # Combine the results to get the average per round
+    better_group_averages = (green_better_avg + blue_better_avg) / 2
+
+
+    # Group and mean for blue group investments by the green group
+    blue_worse_mean = df[df['player.id_in_group'].isin([1, 2, 3, 4])].groupby('subsession.round_number')['player.blue_group_investment'].mean()
+
+    # Group and mean for green group investments by the blue group
+    green_worse_mean = df[df['player.id_in_group'].isin([5, 6, 7, 8])].groupby('subsession.round_number')['player.green_group_investment'].mean()
+
+    # Combine the results to get the average per round
+    worse_group_averages = (blue_worse_mean + green_worse_mean) / 2
 
     # Return as DataFrames
     return better_group_averages, worse_group_averages
@@ -263,11 +268,7 @@ def perform_non_parametric_tests(df):
 
 def plot_averages_all(df):
     # Calculate the mean investments for the 'better' and 'worse' groups across all sessions
-    better_group_averages = df[df['player.id_in_group'].isin([1, 2, 3, 4])].groupby('subsession.round_number')['player.green_group_investment'].mean() \
-                            + df[df['player.id_in_group'].isin([5, 6, 7, 8])].groupby('subsession.round_number')['player.blue_group_investment'].mean()
-
-    worse_group_averages = df[df['player.id_in_group'].isin([1, 2, 3, 4])].groupby('subsession.round_number')['player.blue_group_investment'].mean() \
-                           + df[df['player.id_in_group'].isin([5, 6, 7, 8])].groupby('subsession.round_number')['player.green_group_investment'].mean()
+    better_group_averages, worse_group_averages = calculate_averages(df)
 
     # Plotting
     plt.figure(figsize=(10, 5))
