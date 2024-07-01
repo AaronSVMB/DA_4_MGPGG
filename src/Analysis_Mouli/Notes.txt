@@ -1,0 +1,2 @@
+1. No Bots - 5 sessions with 16 subjects in each, Bots - 8 sessions with 8 subjects in each
+2. The diff diff regression show that in all treatments, the diff in last period affect diff in current period --  effect is more when the difference in groups are higher.

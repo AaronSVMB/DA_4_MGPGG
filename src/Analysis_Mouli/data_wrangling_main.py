@@ -19,16 +19,13 @@ from data_wrangling_functions import(maximum_col_group_by_own_investment,
                                      minimum_col_group_by_own_investment,
                                      minimum_col_group_by_other_last_investment,
                                      player_total_payoff,
-                                     player_total_pg_investment,
-                                     total_pg_investment,
-                                     treatment_rename)
-
+                                     total_pg_investment,rename_treatments)
 #%%
 
 # Creating folder in output folder with date of execution to store all results
 
 # Setting output directory
-output_folder = r"C:\Users\modak\Dropbox\Work\Projects\Multigroup PG\Analysis\Output"
+output_folder = r"C:\Users\mouli\Dropbox\Work\Projects\Multigroup PG\Analysis\Output"
 
 # Different paths
 ## Mouli (Personal): r"C:\Users\mouli\Dropbox\Work\Projects\Multigroup PG\Analysis\Output"
@@ -44,10 +41,10 @@ output_location = path
 
 # Input Folder
 
-input_folder = r"C:\Users\modak\Dropbox\Work\Projects\Multigroup PG\Analysis\Input"
-input_folder_custom = r"C:\Users\modak\Dropbox\Work\Projects\Multigroup PG\Analysis\Input"
+input_folder = r"C:\Users\mouli\Dropbox\Work\Projects\Multigroup PG\Analysis\Input"
+input_folder_custom = r"C:\Users\mouli\Dropbox\Work\Projects\Multigroup PG\Analysis\Input"
 
-file_name = r"\mgpgg_df_all_sessions.csv"
+file_name = r"\mgpgg_all_data_df.csv"
 
 # Different file names
 ## main = \mgpgg_extension_all_df.csv
@@ -57,12 +54,11 @@ file_name = r"\mgpgg_df_all_sessions.csv"
 
 # Importing Data
 
-main_all_df = pd.read_csv(input_folder + file_name, low_memory=False)
-# print(main_all_df.head())
+all_data_df = pd.read_csv(input_folder + file_name, low_memory=False)
 
-# print("Column Names:")
-# for col in main_all_df.columns:
-#     print(col)
+print("Column Names:")
+for col in all_data_df.columns:
+    print(col)
 # %%
 
 # Column renaming
@@ -140,10 +136,11 @@ renamed_colnames = [
 
 ## Keeping necessary columns
 
-main_experiment_df = main_all_df[old_colnames_tokeep]
+main_experiment_df = all_data_df.drop(labels=["Unnamed: 0", "demo"], axis=1)
+print(main_experiment_df.head(5))
 
-main_experiment_df = main_experiment_df.rename(columns=dict(zip(old_colnames_tokeep, renamed_colnames)))
-main_experiment_df = main_experiment_df.rename(columns={"pgg_treatment_applied": "Treatment"})
+# main_experiment_df = main_experiment_df.rename(columns=dict(zip(old_colnames_tokeep, renamed_colnames)))
+# main_experiment_df = main_experiment_df.rename(columns={"pgg_treatment_applied": "Treatment"})
 
 # for col in main_experiment_df.columns:
 #     print(col)
@@ -152,19 +149,18 @@ main_experiment_df = main_experiment_df.rename(columns={"pgg_treatment_applied":
 
 # Adding new columns
 
-main_experiment_df["player_others_blue_group_investment"] = main_experiment_df["player_blue_group_total_investment"] - main_experiment_df["player_blue_group_investment"]
-main_experiment_df["player_others_green_group_investment"] = main_experiment_df["player_green_group_total_investment"] - main_experiment_df["player_green_group_investment"]
-main_experiment_df["player_others_investment"] = (main_experiment_df["player_tot_invest"] - main_experiment_df["player_investment"])/3
-main_experiment_df["player_total_payoff"] = main_experiment_df.apply(lambda row : player_total_payoff(row), axis=1) 
-main_experiment_df["player_total_PGG_investment"] = main_experiment_df.apply(lambda row : player_total_pg_investment(row), axis=1)
+main_experiment_df["others_blue_investment"] = main_experiment_df["blue_total_invest"] - main_experiment_df["blue_investment"]
+main_experiment_df["others_green_investment"] = main_experiment_df["green_total_invest"] - main_experiment_df["green_investment"]
+main_experiment_df["others_investment"] = (main_experiment_df["total_investment"] - main_experiment_df["investment"])/3
+main_experiment_df["total_payoff"] = main_experiment_df.apply(lambda row : player_total_payoff(row), axis=1) 
 main_experiment_df["total_PGG_investment"] = main_experiment_df.apply(lambda row : total_pg_investment(row), axis=1)
-main_experiment_df["Treatment"] = main_experiment_df.apply(lambda row : treatment_rename(row), axis=1)
+main_experiment_df["treatment"] = main_experiment_df.apply(lambda row : rename_treatments(row), axis=1)
 
 #%%
 
 ## More and Less Own Contribution
-main_experiment_df["player_more_investment"] = main_experiment_df[["player_blue_group_investment", "player_green_group_investment"]].max(axis=1)
-main_experiment_df["player_less_investment"] = main_experiment_df[["player_blue_group_investment", "player_green_group_investment"]].min(axis=1)
+main_experiment_df["player_more_investment"] = main_experiment_df[["blue_investment", "green_investment"]].max(axis=1)
+main_experiment_df["player_less_investment"] = main_experiment_df[["blue_investment", "green_investment"]].min(axis=1)
 
 print(main_experiment_df["player_more_investment"])
 
@@ -173,114 +169,82 @@ print(main_experiment_df["player_more_investment"])
 # Last period data
 
 temp_df = main_experiment_df[[
-    "Treatment",
+    "treatment",
+    "session_code",
     "participant_code",
-    "player_id_in_group",
-    "player_investment",
-    "player_personal_account",
-    "player_indiv_share",
-    "player_tot_invest",
-    "player_blue_group_partner_one_id",
-    "player_blue_group_partner_two_id",
-    "player_blue_group_partner_three_id",
-    "player_blue_group_total_investment",
-    "player_blue_group_individual_share",
-    "player_green_group_partner_one_id",
-    "player_green_group_partner_two_id",
-    "player_green_group_partner_three_id",
-    "player_green_group_total_investment",
-    "player_green_group_individual_share",
-    "player_blue_group_profit",
-    "player_green_group_profit",
-    "player_personal_account",
-    "player_blue_group_investment",
-    "player_green_group_investment",
+    "period",
+    "participant_id",
+    "investment",
+    "personal_account",
+    "individual_share",
+    "total_investment",
+    "blue_one_id",
+    "blue_two_id",
+    "blue_three_id",
+    "blue_total_invest",
+    "blue_individual_share",
+    "green_one_id",
+    "green_two_id",
+    "green_three_id",
+    "green_total_invest",
+    "green_individual_share",
+    "blue_period_profit",
+    "green_period_profit",
+    "blue_investment",
+    "green_investment",
     "player_more_investment",
     "player_less_investment",
-    "player_others_blue_group_investment",
-    "player_others_green_group_investment",
-    "player_others_investment",
-    "player_total_payoff",
-    "player_total_PGG_investment",
+    "others_blue_investment",
+    "others_green_investment",
+    "others_investment",
+    "total_payoff",
     "total_PGG_investment",
-    "group_id_in_subsession",
+    # "total_PGG_investment",
+    "group_id",
     "group_total_investment",
-    "group_individual_share",
-    "subsession_round_number",
-    "session_code",
+    "group_individual_share"
 ]]
 
 colnames_to_change = [
-    "player_investment",
-    "player_personal_account",
-    "player_indiv_share",
-    "player_tot_invest",
-    "player_blue_group_partner_one_id",
-    "player_blue_group_partner_two_id",
-    "player_blue_group_partner_three_id",
-    "player_blue_group_total_investment",
-    "player_blue_group_individual_share",
-    "player_green_group_partner_one_id",
-    "player_green_group_partner_two_id",
-    "player_green_group_partner_three_id",
-    "player_green_group_total_investment",
-    "player_green_group_individual_share",
-    "player_blue_group_profit",
-    "player_green_group_profit",
-    "player_personal_account",
-    "player_blue_group_investment",
-    "player_green_group_investment",
+    "investment",
+    "personal_account",
+    "individual_share",
+    "total_investment",
+    "blue_one_id",
+    "blue_two_id",
+    "blue_three_id",
+    "blue_total_invest",
+    "blue_individual_share",
+    "green_one_id",
+    "green_two_id",
+    "green_three_id",
+    "green_total_invest",
+    "green_individual_share",
+    "blue_profit",
+    "green_profit",
+    "personal_account",
+    "blue_investment",
+    "green_investment",
     "player_more_investment",
     "player_less_investment",
-    "player_others_blue_group_investment",
-    "player_others_green_group_investment",
-    "player_others_investment",
-    "player_total_payoff",
-    "player_total_PGG_investment",
+    "others_blue_investment",
+    "others_green_investment",
+    "others_investment",
+    "total_payoff",
     "total_PGG_investment",
     "group_total_investment",
     "group_individual_share",
 ]
 
-colnames_last_period = [
-    "L_player_investment",
-    "L_player_personal_account",
-    "L_player_indiv_share",
-    "L_player_tot_invest",
-    "L_player_blue_group_partner_one_id",
-    "L_player_blue_group_partner_two_id",
-    "L_player_blue_group_partner_three_id",
-    "L_player_blue_group_total_investment",
-    "L_player_blue_group_individual_share",
-    "L_player_green_group_partner_one_id",
-    "L_player_green_group_partner_two_id",
-    "L_player_green_group_partner_three_id",
-    "L_player_green_group_total_investment",
-    "L_player_green_group_individual_share",
-    "L_player_blue_group_profit",
-    "L_player_green_group_profit",
-    "L_player_personal_account",
-    "L_player_blue_group_investment",
-    "L_player_green_group_investment",
-    "L_player_more_investment",
-    "L_player_less_investment",
-    "L_player_others_blue_group_investment",
-    "L_player_others_green_group_investment",
-    "L_player_others_investment",
-    "L_player_total_payoff",
-    "L_player_total_PGG_investment",
-    "L_total_PGG_investment",
-    "L_group_total_investment",
-    "L_group_individual_share",
-]
+colnames_last_period = ["L_"+i for i in colnames_to_change]
 
 temp_df = temp_df.rename(columns=dict(zip(colnames_to_change, colnames_last_period)))
 
 # print(temp_df.columns)
 
-temp_df["subsession_round_number"] = temp_df["subsession_round_number"] + 1
+temp_df["period"] = temp_df["period"] + 1
 
-L_main_experiment_df = pd.merge(left=main_experiment_df, right=temp_df, how="left", on=["Treatment", "participant_code", "player_id_in_group", "group_id_in_subsession", "subsession_round_number", "session_code"], validate="1:1")
+L_main_experiment_df = pd.merge(left=main_experiment_df, right=temp_df, how="left", on=["treatment","session_code", "participant_code", "period", "participant_id", "group_id"], validate="1:1")
 # print(L_main_experiment_df.columns)
 
 # %%
@@ -294,12 +258,12 @@ L_main_experiment_df["minimum_col_group_by_other_last_investment"] = L_main_expe
 
 # %%
 
-# print(L_main_experiment_df[(L_main_experiment_df.Treatment  != "Single Group") & (L_main_experiment_df.subsession_round_number != 1)][["subsession_round_number", "session_code", "Treatment", "L_player_others_blue_group_investment", "L_player_others_green_group_investment"]].head(10))
+# print(L_main_experiment_df[(L_main_experiment_df.Treatment  != "Single Group") & (L_main_experiment_df.period != 1)][["period", "session_code", "Treatment", "L_player_others_blue_group_investment", "L_player_others_green_group_investment"]].head(10))
 
 # %%
 
 # Storing data
 
-L_main_experiment_df.to_csv(input_folder_custom+"\main_sessions_experiment_data.csv")
+L_main_experiment_df.to_csv(input_folder_custom+r"\all_sessions_experiment_data.csv")
 
 # %%

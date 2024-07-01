@@ -4,9 +4,9 @@ import pandas as pd
 
 def maximum_col_group_by_own_investment(row):
 
-    if row.player_blue_group_investment > row.player_green_group_investment:
+    if row.blue_investment > row.green_investment:
         return "Blue"
-    elif row.player_blue_group_investment < row.player_green_group_investment:
+    elif row.blue_investment < row.green_investment:
         return "Green"
     else:
         return "Equal"
@@ -20,9 +20,9 @@ def minimum_col_group_by_own_investment(row):
         return "Equal"
 
 def maximum_col_group_by_other_last_investment(row):
-    if row.L_player_others_blue_group_investment > row.L_player_others_green_group_investment:
+    if row.L_others_blue_investment > row.L_others_green_investment:
         return "Blue"
-    elif row.L_player_others_blue_group_investment < row.L_player_others_green_group_investment:
+    elif row.L_others_blue_investment < row.L_others_green_investment:
         return "Green"
     else:
         return "Equal"
@@ -37,9 +37,9 @@ def minimum_col_group_by_other_last_investment(row):
 
 def maximum_com_group_by_own_investment(row):
 
-    if row.player_better_group_investment > row.player_worse_group_investment:
+    if row.better_group_investment > row.worse_group_investment:
         return "Better"
-    elif row.player_better_group_investment < row.player_worse_group_investment:
+    elif row.better_group_investment < row.worse_group_investment:
         return "Worse"
     else:
         return "Equal"
@@ -53,9 +53,9 @@ def minimum_com_group_by_own_investment(row):
         return "Equal"
 
 def maximum_com_group_by_other_last_investment(row):
-    if row.L_player_others_better_group_investment > row.L_player_others_worse_group_investment:
+    if row.L_others_better_group_investment > row.L_others_worse_group_investment:
         return "Better"
-    elif row.L_player_others_better_group_investment < row.L_player_others_worse_group_investment:
+    elif row.L_others_better_group_investment < row.L_others_worse_group_investment:
         return "Worse"
     else:
         return "Equal"
@@ -70,41 +70,31 @@ def minimum_com_group_by_other_last_investment(row):
 
 def player_total_payoff(row):
 
-    if row["Treatment"] == "single":
-        ret = row["player_personal_account"] + row["player_indiv_share"]
+    if row["treatment"] == "Single Group":
+        ret = row["personal_account"] + row["individual_share"]
     else:
-        ret = row["player_personal_account"] + row["player_blue_group_individual_share"] + row["player_green_group_individual_share"]
+        ret = row["personal_account"] + row["blue_individual_share"] + row["green_individual_share"]
     # print(ret)
     return ret
 
 def total_pg_investment(row):
 
-    if row["Treatment"] == "single":
-        ret = row["player_tot_invest"]
+    if row["treatment"] == "Single Group":
+        ret = row["investment"]
     else:
-        ret = row["player_blue_group_total_investment"] + row["player_green_group_total_investment"]
+        ret = row["blue_investment"] + row["green_investment"]
 
     return ret
 
-def player_total_pg_investment(row):
-
-    if row["Treatment"] == "single":
-        ret = row["player_investment"]
+def rename_treatments(row):
+    if row.treatment == "Multi-Shared":
+        return "Multi-Shared (Humans)"
+    elif row.treatment == "Bots Unbalanced":
+        return "Multi-Shared (Bots Unbalanced)"
+    elif row.treatment == "Bots Balanced":
+        return "Multi-Shared (Bots Balanced)"
     else:
-        ret = row["player_blue_group_investment"] + row["player_green_group_investment"]
-
-    return ret
-
-def treatment_rename(row):
-
-    if row["Treatment"] == "single":
-        ret = "Single Group"
-    elif row["Treatment"] == "shared":
-        ret = "Multi-Shared"
-    elif row["Treatment"] == "split":
-        ret = "Multi-Split"
-
-    return ret
+        return row.treatment
 
 def rename_accounts(row):
 

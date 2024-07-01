@@ -65,7 +65,7 @@ file_name_custom = r"\all_sessions_treatment_strategy.csv"
 # main_df["Sessions"] = "Main"
 # bots_df = pd.read_csv(input_folder + file_name_bots, low_memory=False)
 # bots_df["Sessions"] = "Bots"
-# bots_df["Treatment"] = "Multi-Shared Bots"
+# bots_df["treatment"] = "Multi-Shared Bots"
 
 # all_sessions_df = pd.concat([main_df, bots_df], ignore_index=True)
 
@@ -73,11 +73,11 @@ file_name_custom = r"\all_sessions_treatment_strategy.csv"
 ## Block 1 -- End ##
 
 ## Block 2 -- Start ##
-all_sessions_df = pd.read_csv(input_folder + r"\all_sessions_treatment_strategy.csv", low_memory=False, index_col=0)
+all_sessions_df = pd.read_csv(input_folder + r"\all_sessions_experiment_data.csv", low_memory=False, index_col=0)
 ## Block 2 -- End ##
 
 
-# print(all_sessions_df[(all_sessions_df.Treatment  != "Single Group") & (all_sessions_df.subsession_round_number != 1)][["subsession_round_number", "session_code", "Treatment", "L_player_others_blue_group_investment", "L_player_others_green_group_investment"]].head(10))
+# print(all_sessions_df[(all_sessions_df.treatment  != "Single Group") & (all_sessions_df.subsession_round_number != 1)][["subsession_round_number", "session_code", "treatment", "L_player_others_blue_group_investment", "L_player_others_green_group_investment"]].head(10))
 
 print("Column Names:")
 for col in all_sessions_df.columns:
@@ -109,88 +109,88 @@ plt.show()
 
 # CDF and Scatterplots
 
-print("Multi Split Treatment")
+print("Multi Split treatment")
 
-sns.ecdfplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Split"], x="player_blue_group_investment", color="b", label="Blue Group")
-sns.ecdfplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Split"], x="player_green_group_investment", color="g", label="Green Group")
+sns.ecdfplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Split"], x="blue_investment", color="b", label="Blue Group")
+sns.ecdfplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Split"], x="green_investment", color="g", label="Green Group")
 plt.xlabel("Player's investment in Green Group")
 plt.xlim(-1,11)
 plt.legend()
 plt.show()
 
-sns.ecdfplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Split"], x="player_others_blue_group_investment", color="b", label="Blue Group")
-sns.ecdfplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Split"], x="player_others_green_group_investment", color="g", label="Green Group")
+sns.ecdfplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Split"], x="player_others_blue_group_investment", color="b", label="Blue Group")
+sns.ecdfplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Split"], x="player_others_green_group_investment", color="g", label="Green Group")
 plt.xlabel("Others' investment in Green Group")
 plt.xlim(-1,31)
 plt.legend()
 plt.show()
 
-sns.scatterplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Split"], x="L_player_others_blue_group_investment", y="player_blue_group_investment", color="b", alpha=0.35)
+sns.scatterplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Split"], x="L_player_others_blue_group_investment", y="blue_investment", color="b", alpha=0.35)
 plt.ylabel("Own investment in Blue Group")
 plt.xlabel("Others' investment in Blue Group at t-1")
 plt.xlim(-1,31)
 plt.show()
-sns.scatterplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Split"], x="L_player_others_green_group_investment", y="player_green_group_investment", color="g", alpha=0.35)
+sns.scatterplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Split"], x="L_player_others_green_group_investment", y="green_investment", color="g", alpha=0.35)
 plt.ylabel("Own investment in Green Group")
 plt.xlabel("Others' investment in Green Group at t-1")
 plt.xlim(-1,31)
 plt.show()
 
-print("Multi Shared Treatment")
+print("Multi Shared (Humans) treatment")
 
-sns.ecdfplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Shared"], x="player_blue_group_investment", color="b", label="Blue Group")
-sns.ecdfplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Shared"], x="player_green_group_investment", color="g", label="Green Group")
+sns.ecdfplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Shared"], x="blue_investment", color="b", label="Blue Group")
+sns.ecdfplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Shared"], x="green_investment", color="g", label="Green Group")
 plt.xlabel("Player's investment in Green Group")
 plt.xlim(-1,21)
 plt.legend()
 plt.show()
 
-sns.ecdfplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Shared"], x="player_others_blue_group_investment", color="b", label="Blue Group")
-sns.ecdfplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Shared"], x="player_others_green_group_investment", color="g", label="Green Group")
+sns.ecdfplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Shared"], x="player_others_blue_group_investment", color="b", label="Blue Group")
+sns.ecdfplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Shared"], x="player_others_green_group_investment", color="g", label="Green Group")
 plt.xlabel("Others' investment in Green Group")
 plt.xlim(-1,61)
 plt.legend()
 plt.show()
 
-sns.scatterplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Shared"], x="L_player_others_blue_group_investment", y="player_blue_group_investment", color="b", alpha=0.35)
+sns.scatterplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Shared"], x="L_player_others_blue_group_investment", y="blue_investment", color="b", alpha=0.35)
 plt.ylabel("Own investment in Blue Group")
 plt.xlabel("Others' investment in Blue Group at t-1")
 plt.xlim(-1,61)
 plt.show()
-sns.scatterplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Shared"], x="L_player_others_green_group_investment", y="player_green_group_investment", color="g", alpha=0.35)
+sns.scatterplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Shared"], x="L_player_others_green_group_investment", y="green_investment", color="g", alpha=0.35)
 plt.ylabel("Own investment in Green Group")
 plt.xlabel("Others' investment in Green Group at t-1")
 plt.xlim(-1,61)
 plt.show()
 
-print("Multi Shared Bots Treatment")
+print("Multi Shared Bots treatment")
 
-sns.ecdfplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Shared Bots"], x="player_blue_group_investment", color="b", label="Blue Group")
-sns.ecdfplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Shared Bots"], x="player_green_group_investment", color="g", label="Green Group")
+sns.ecdfplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Shared Bots"], x="blue_investment", color="b", label="Blue Group")
+sns.ecdfplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Shared Bots"], x="green_investment", color="g", label="Green Group")
 plt.xlabel("Player's investment in Public Goods")
 plt.xlim(-1,21)
 plt.legend()
 plt.show()
-sns.ecdfplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Shared Bots"], x="player_better_group_investment", color="k", label="Better Group")
-sns.ecdfplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Shared Bots"], x="player_worse_group_investment", color="r", label="Worse Group")
+sns.ecdfplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Shared Bots"], x="player_better_group_investment", color="k", label="Better Group")
+sns.ecdfplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Shared Bots"], x="player_worse_group_investment", color="r", label="Worse Group")
 plt.xlabel("Player's investment in Public Goods")
 plt.xlim(-1,21)
 plt.legend()
 plt.show()
 
-sns.ecdfplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Shared Bots"], x="player_others_blue_group_investment", color="b", label="Blue Group")
-sns.ecdfplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Shared Bots"], x="player_others_green_group_investment", color="g", label="Green Group")
+sns.ecdfplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Shared Bots"], x="player_others_blue_group_investment", color="b", label="Blue Group")
+sns.ecdfplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Shared Bots"], x="player_others_green_group_investment", color="g", label="Green Group")
 plt.xlabel("Others' investment in Public Goods")
 plt.xlim(-1,61)
 plt.legend()
 plt.show()
 
-sns.scatterplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Shared Bots"], x="L_player_others_blue_group_investment", y="player_blue_group_investment", color="b", alpha=0.35)
+sns.scatterplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Shared Bots"], x="L_player_others_blue_group_investment", y="blue_investment", color="b", alpha=0.35)
 plt.ylabel("Own investment in Blue Group")
 plt.xlabel("Others' investment in Blue Group at t-1")
 plt.xlim(-1,61)
 plt.show()
-sns.scatterplot(data=all_sessions_df[all_sessions_df.Treatment == "Multi-Shared Bots"], x="L_player_others_green_group_investment", y="player_green_group_investment", color="g", alpha=0.35)
+sns.scatterplot(data=all_sessions_df[all_sessions_df.treatment == "Multi-Shared Bots"], x="L_player_others_green_group_investment", y="green_investment", color="g", alpha=0.35)
 plt.ylabel("Own investment in Green Group")
 plt.xlabel("Others' investment in Green Group at t-1")
 plt.xlim(-1,61)
@@ -205,23 +205,23 @@ plt.xlim(-1,61)
 plt.legend()
 plt.show()
 
-sns.scatterplot(data=all_sessions_df[all_sessions_df.better_group == "blue"], x="L_player_others_better_group_investment", y="player_blue_group_investment", color="b", alpha=0.35)
+sns.scatterplot(data=all_sessions_df[all_sessions_df.better_group == "blue"], x="L_player_others_better_group_investment", y="blue_investment", color="b", alpha=0.35)
 plt.ylabel("Own investment in Blue Group")
 plt.xlabel("Others' investment in Better Group (Blue) at t-1")
 plt.xlim(-1,61)
 plt.show()
-sns.scatterplot(data=all_sessions_df[all_sessions_df.better_group == "blue"], x="L_player_others_worse_group_investment", y="player_green_group_investment", color="g", alpha=0.35)
+sns.scatterplot(data=all_sessions_df[all_sessions_df.better_group == "blue"], x="L_player_others_worse_group_investment", y="green_investment", color="g", alpha=0.35)
 plt.ylabel("Own investment in Green Group")
 plt.xlabel("Others' investment in Worse Group (Green) at t-1")
 plt.xlim(-1,61)
 plt.show()
 
-sns.scatterplot(data=all_sessions_df[all_sessions_df.better_group == "green"], x="L_player_others_better_group_investment", y="player_green_group_investment", color="g", alpha=0.35)
+sns.scatterplot(data=all_sessions_df[all_sessions_df.better_group == "green"], x="L_player_others_better_group_investment", y="green_investment", color="g", alpha=0.35)
 plt.ylabel("Own investment in Green Group")
 plt.xlabel("Others' investment in Better Group (Green) at t-1")
 plt.xlim(-1,61)
 plt.show()
-sns.scatterplot(data=all_sessions_df[all_sessions_df.better_group == "green"], x="L_player_others_worse_group_investment", y="player_blue_group_investment", color="b", alpha=0.35)
+sns.scatterplot(data=all_sessions_df[all_sessions_df.better_group == "green"], x="L_player_others_worse_group_investment", y="blue_investment", color="b", alpha=0.35)
 plt.ylabel("Own investment in Blue Group")
 plt.xlabel("Others' investment in Worse Group (Blue) at t-1")
 plt.xlim(-1,61)
@@ -239,8 +239,12 @@ plt.show()
 #%%
 
 # Line Plots (All Periods, By Periods)
-        
-plot_order_effect(all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared Bots")], output_location)
+
+
+# print(all_sessions_df.treatment.unique())
+
+for t in all_sessions_df.treatment.unique():
+    plot_order_effect(all_sessions_df[(all_sessions_df.treatment == t)], output_location)
 
 # for account in ["Total", "Blue", "Green", "Personal"]:
 #     plot_avg_amount_account_byPeriod(all_sessions_df, account, "both", output_location)
@@ -256,7 +260,7 @@ plot_order_effect(all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared Bo
 # }
 
 # figure_details["Type 2"] = {
-#     "columns": ["player_blue_group_investment", "player_green_group_investment"],
+#     "columns": ["blue_investment", "green_investment"],
 #     "labels": ["Blue Account", "Green Account"],
 #     "colors": ["b", "g"],
 #     "linestyle": ["-", "--"],
@@ -264,7 +268,7 @@ plot_order_effect(all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared Bo
 # }
 
 # figure_details["Type 3"] = {
-#     "columns": ["player_more_investment", "player_less_investment", "player_blue_group_investment", "player_green_group_investment"],
+#     "columns": ["player_more_investment", "player_less_investment", "blue_investment", "green_investment"],
 #     "labels": ["High Investment", "Low Investment", "Blue Account", "Green Account"],
 #     "colors": ["k", "r", "b", "g"],
 #     "linestyle": ["-", "--", "-.", ":"],
@@ -272,7 +276,7 @@ plot_order_effect(all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared Bo
 # }
 
 # figure_details["Type 4"] = {
-#     "columns": ["player_better_group_investment", "player_worse_group_investment", "player_blue_group_investment", "player_green_group_investment"],
+#     "columns": ["player_better_group_investment", "player_worse_group_investment", "blue_investment", "green_investment"],
 #     "labels": ["More Cooperative", "Less Cooperative", "Blue Account", "Green Account"],
 #     "colors": ["k", "r", "b", "g"],
 #     "linestyle": ["-", "--", "-.", ":"],
@@ -297,7 +301,7 @@ plot_order_effect(all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared Bo
 
 # Difference between Blue and Green Groups
 
-# plot_diff_BlueGreen(all_sessions_df, output_location)
+plot_diff_BlueGreen(all_sessions_df, output_location)
 
 # %%
 
@@ -305,35 +309,35 @@ plot_order_effect(all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared Bo
 
 print("First Period")
   
-stat, pval = stats.kruskal(all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared") & (all_sessions_df.subsession_round_number == 1)]["player_total_PGG_investment"], 
-               all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared Bots") & (all_sessions_df.subsession_round_number == 1)]["player_total_PGG_investment"])
+stat, pval = stats.kruskal(all_sessions_df[(all_sessions_df.treatment == "Multi-Shared") & (all_sessions_df.subsession_round_number == 1)]["player_total_PGG_investment"], 
+               all_sessions_df[(all_sessions_df.treatment == "Multi-Shared Bots") & (all_sessions_df.subsession_round_number == 1)]["player_total_PGG_investment"])
 
 print("Total PGG Investment: stat = {}, pval = {}".format(round(stat, 3), round(pval, 3)))
 
-stat, pval = stats.kruskal(all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared") & (all_sessions_df.subsession_round_number == 1)]["player_blue_group_investment"], 
-               all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared Bots") & (all_sessions_df.subsession_round_number == 1)]["player_blue_group_investment"])
+stat, pval = stats.kruskal(all_sessions_df[(all_sessions_df.treatment == "Multi-Shared") & (all_sessions_df.subsession_round_number == 1)]["blue_investment"], 
+               all_sessions_df[(all_sessions_df.treatment == "Multi-Shared Bots") & (all_sessions_df.subsession_round_number == 1)]["blue_investment"])
 
 print("Blue PGG Investment: stat = {}, pval = {}".format(round(stat, 3), round(pval, 3)))
 
-stat, pval = stats.kruskal(all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared") & (all_sessions_df.subsession_round_number == 1)]["player_green_group_investment"], 
-               all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared Bots") & (all_sessions_df.subsession_round_number == 1)]["player_green_group_investment"])
+stat, pval = stats.kruskal(all_sessions_df[(all_sessions_df.treatment == "Multi-Shared") & (all_sessions_df.subsession_round_number == 1)]["green_investment"], 
+               all_sessions_df[(all_sessions_df.treatment == "Multi-Shared Bots") & (all_sessions_df.subsession_round_number == 1)]["green_investment"])
 
 print("Blue PGG Investment: stat = {}, pval = {}".format(round(stat, 3), round(pval, 3)))
 
 print("All Periods")
   
-stat, pval = stats.kruskal(all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared")]["player_total_PGG_investment"], 
-               all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared Bots")]["player_total_PGG_investment"])
+stat, pval = stats.kruskal(all_sessions_df[(all_sessions_df.treatment == "Multi-Shared")]["player_total_PGG_investment"], 
+               all_sessions_df[(all_sessions_df.treatment == "Multi-Shared Bots")]["player_total_PGG_investment"])
 
 print("Total PGG Investment: stat = {}, pval = {}".format(round(stat, 3), round(pval, 3)))
 
-stat, pval = stats.kruskal(all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared")]["player_blue_group_investment"], 
-               all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared Bots")]["player_blue_group_investment"])
+stat, pval = stats.kruskal(all_sessions_df[(all_sessions_df.treatment == "Multi-Shared")]["blue_investment"], 
+               all_sessions_df[(all_sessions_df.treatment == "Multi-Shared Bots")]["blue_investment"])
 
 print("Blue PGG Investment: stat = {}, pval = {}".format(round(stat, 3), round(pval, 3)))
 
-stat, pval = stats.kruskal(all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared")]["player_green_group_investment"], 
-               all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared Bots")]["player_green_group_investment"])
+stat, pval = stats.kruskal(all_sessions_df[(all_sessions_df.treatment == "Multi-Shared")]["green_investment"], 
+               all_sessions_df[(all_sessions_df.treatment == "Multi-Shared Bots")]["green_investment"])
 
 print("Blue PGG Investment: stat = {}, pval = {}".format(round(stat, 3), round(pval, 3)))
 # %%
@@ -341,7 +345,7 @@ print("Blue PGG Investment: stat = {}, pval = {}".format(round(stat, 3), round(p
 # Swarm Plots
 
 # plt.figure(figsize=(6,6))
-# sns.swarmplot(data=all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared") & (all_sessions_df.subsession_round_number == 1)], x="Sessions", y="player_total_PGG_investment", color="k")
+# sns.swarmplot(data=all_sessions_df[(all_sessions_df.treatment == "Multi-Shared") & (all_sessions_df.subsession_round_number == 1)], x="Sessions", y="player_total_PGG_investment", color="k")
 # plt.ylabel("Total Public Good Investment", fontsize = 16)
 # plt.ylim(-1,21)
 # plt.yticks(ticks=[0,2,4,6,8,10,12,14,16,18,20])
@@ -351,7 +355,7 @@ print("Blue PGG Investment: stat = {}, pval = {}".format(round(stat, 3), round(p
 # plt.show()
 
 # plt.figure(figsize=(6,6))
-# sns.swarmplot(data=all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared") & (all_sessions_df.subsession_round_number == 1)], x="Sessions", y="player_blue_group_investment", color="b")
+# sns.swarmplot(data=all_sessions_df[(all_sessions_df.treatment == "Multi-Shared") & (all_sessions_df.subsession_round_number == 1)], x="Sessions", y="blue_investment", color="b")
 # plt.ylabel("Blue Public Good Investment", fontsize = 16)
 # plt.ylim(-1,21)
 # plt.yticks(ticks=[0,2,4,6,8,10,12,14,16,18,20])
@@ -361,7 +365,7 @@ print("Blue PGG Investment: stat = {}, pval = {}".format(round(stat, 3), round(p
 # plt.show()
 
 # plt.figure(figsize=(6,6))
-# sns.swarmplot(data=all_sessions_df[(all_sessions_df.Treatment == "Multi-Shared") & (all_sessions_df.subsession_round_number == 1)], x="Sessions", y="player_green_group_investment", color="g")
+# sns.swarmplot(data=all_sessions_df[(all_sessions_df.treatment == "Multi-Shared") & (all_sessions_df.subsession_round_number == 1)], x="Sessions", y="green_investment", color="g")
 # plt.ylabel("Green Public Good Investment", fontsize = 16)
 # plt.ylim(-1,21)
 # plt.yticks(ticks=[0,2,4,6,8,10,12,14,16,18,20])
